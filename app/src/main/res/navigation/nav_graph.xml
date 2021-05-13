@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_mesages">
+
+    <fragment
+        android:id="@+id/nav_comments"
+        android:name="com.example.twisterfragments.UI.CommentsFragment"
+        android:label="Comments"
+        tools:layout="@layout/fragment_comments" />
+    <fragment
+        android:id="@+id/nav_mesages"
+        android:name="com.example.twisterfragments.UI.MessagesFragment"
+        android:label="Messages"
+        tools:layout="@layout/fragment_messages">
+        <action
+            android:id="@+id/action_messagesFragment_to_commentsFragment"
+            app:destination="@id/nav_comments" />
+        <action
+            android:id="@+id/action_nav_mesages_to_addMessageFragment"
+            app:destination="@id/nav_add" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_add"
+        android:name="com.example.twisterfragments.UI.AddMessageFragment"
+        android:label="Add Message"
+        tools:layout="@layout/fragment_add_message" />
+</navigation>
