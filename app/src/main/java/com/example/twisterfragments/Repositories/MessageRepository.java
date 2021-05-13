@@ -17,11 +17,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MessageRepository {
-    final static String MESSAGE ="message";
+    final static String MESSAGE = "message";
 
 
     private static MessageRepository instance;
-    public MutableLiveData<List<Messages>> mMessages;
+    //public MutableLiveData<List<Messages>> mMessages;
 
   /*public static  MessageRepository getInstance(){
 
@@ -32,10 +32,25 @@ public class MessageRepository {
     return instance;
    }*/
 
-   public MessageRepository(){
+    public MessageRepository() {
 
-      mMessages= new MutableLiveData<>();
-   }
+       // mMessages = new MutableLiveData<>();
+    }
+
+
+    private MutableLiveData<List<Messages>> messages;
+
+
+    public LiveData<List<Messages>> getMessages(){
+        if(messages == null){
+            messages = new MutableLiveData<>();
+          getAndShowAllMessages();
+            //messages.setValue( mMessages.getValue());
+            Log.d(MESSAGE, "in getMessages : " + messages.toString());
+        }
+        return messages;
+        }
+
 
     public void getAndShowAllMessages() {
         ApiServices services = ApiUtils.getMessagesService();
@@ -47,14 +62,14 @@ public class MessageRepository {
                 Log.d(MESSAGE, response.raw().toString());
 
                 if (response.isSuccessful()) {
-                   // List<Messages> allMessages = response.body();
+                    // List<Messages> allMessages = response.body();
                     //Log.d(MESSAGE, allMessages.toString());
                     //populateRecycleView(allMessages);
-                    mMessages.setValue(response.body());
-                    Log.d(MESSAGE, " the messages are " +mMessages.getValue());
+                    messages.setValue(response.body());
+                    Log.d(MESSAGE, " the messages are " +messages.getValue());
 
                 } else {
-                    mMessages.setValue(null);
+                    messages.setValue(null);
                     String message =response.code() + " " + response.message();
                     Log.d(MESSAGE, "the problem is: " + message);
                     //viewMessage.setText(message);
@@ -68,13 +83,4 @@ public class MessageRepository {
             }
         });
     }
-    private MutableLiveData<List<Messages>> messages;
-
-    public LiveData<List<Messages>> getMessages(){
-        if(messages == null){
-            messages = new MutableLiveData<>();
-            getAndShowAllMessages();
-        }
-        Log.d(MESSAGE, "in getMessages : " + messages);
-      return messages;}
 }

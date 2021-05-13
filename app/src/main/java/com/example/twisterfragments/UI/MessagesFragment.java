@@ -52,7 +52,6 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -75,15 +74,11 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener {
                  if (messages != null) {
                      populateRecycleView(mViewModel.getAllMessages().getValue());
 
-                     mAdapter.notifyDataSetChanged();
+                    // mAdapter.notifyDataSetChanged();
                  }
              }
          });
 
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     private void populateRecycleView(List<Messages> allMessages) {
@@ -99,6 +94,8 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener {
             Bundle bundle = new Bundle();
             bundle.putSerializable(MESSAGE, message.getContent());
             bundle.putSerializable(ID, message.getId());
+            //fragment.setArguments(bundle);
+            //NavDirections action = MessagesFragmentDirections.actionMessagesFragmentToCommentsFragment();
 
             if (getView() != null) {
 

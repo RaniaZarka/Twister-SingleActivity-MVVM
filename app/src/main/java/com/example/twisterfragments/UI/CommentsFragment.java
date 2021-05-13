@@ -74,9 +74,7 @@ public class CommentsFragment extends Fragment  {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comments, container, false);
 
-
     }
-
 
     public void getAllComments() {
         Bundle bundle = this.getArguments();

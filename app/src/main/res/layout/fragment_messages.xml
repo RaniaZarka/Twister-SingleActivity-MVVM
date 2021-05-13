@@ -30,6 +30,18 @@
         android:id="@+id/allMessagesForTest"
         android:orientation="vertical">
 
+
+
+
+
+
+
+
+
+
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messageRecyclerView"
             android:layout_width="match_parent"

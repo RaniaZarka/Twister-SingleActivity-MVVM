@@ -22,25 +22,51 @@ import retrofit2.Response;
 
 public class MessageViewModel extends ViewModel {
 
-    final static String MESSAGE ="message";
+    final static String MESSAGE = "message";
     private MessageRepository mRepository;
+    private LiveData<List<Messages>> messageLiveData;
 
     // Constructor
     public MessageViewModel() {
-
-        mRepository= new MessageRepository();
+        mRepository = new MessageRepository();
+        this.messageLiveData=  mRepository.getMessages();
     }
 
+    public LiveData<List<Messages>> getAllMessages() {
 
-    private MutableLiveData<List<Messages>> messages;
-
-    public LiveData<List<Messages>> getAllMessages(){
-        if(messages == null){
-            messages = new MutableLiveData<>();
-            mRepository.getMessages();
-        }
-        return messages;
+        return messageLiveData;
     }
+}
+
+   /* public void getAndShowAllMessages() {
+        ApiServices services = ApiUtils.getMessagesService();
+        Call<List<Messages>> getAllMessagesCall = services.getAllMessages();
+
+        getAllMessagesCall.enqueue(new Callback<List<Messages>>() {
+            @Override
+            public void onResponse(Call<List<Messages>> call, Response<List<Messages>> response) {
+                Log.d(MESSAGE, response.raw().toString());
+
+                if (response.isSuccessful()) {
+                    messages.setValue(response.body());
+                    Log.d(MESSAGE, String.valueOf(messages.getValue()));
+                } else {
+                    messages.setValue(null);
+                    String message =response.code() + " " + response.message();
+                    Log.d(MESSAGE, "the problem is: " + message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Messages>> call, Throwable t) {
+                Log.e(MESSAGE, t.getMessage());
+                //viewMessage.setText(t.getMessage());
+            }
+        });
+    }
+
+    }
+
 
    /* public void getAndShowAllMessages() {
         ApiServices services = ApiUtils.getMessagesService();
@@ -73,4 +99,4 @@ public class MessageViewModel extends ViewModel {
             }
         });
     }*/
-}
+
