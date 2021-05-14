@@ -70,6 +70,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         ContenttextView = itemView.findViewById(R.id.recyclerContent);
         TotalTextView = itemView.findViewById(R.id.recyclerTotalComments);
         itemView.setOnClickListener(this);
+
     }
 
     @Override

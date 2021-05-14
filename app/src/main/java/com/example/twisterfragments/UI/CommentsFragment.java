@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.ViewModel.MessageViewModel;
 import com.example.twisterfragments.WebApi.ApiServices;
 import com.example.twisterfragments.WebApi.ApiUtils;
 import com.example.twisterfragments.Model.Comments;
@@ -39,6 +43,7 @@ public class CommentsFragment extends Fragment  {
     //FirebaseAuth fAuth;
     public static final String MESSAGE = "message";
     RecyclerViewCommentAdapter adapter;
+    MessageViewModel mViewModel;
    // private Layout layout;
 
 
@@ -53,20 +58,35 @@ public class CommentsFragment extends Fragment  {
         setHasOptionsMenu(true);
 
     }
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         message = (TextView) findViewById(R.id.commentOriginalMessage);
-        Bundle bundle = this.getArguments();
+        /*Bundle bundle = this.getArguments();
            if(bundle != null) {
              String data = bundle.getSerializable(MESSAGE).toString();
-             message.setText(data);}
+             message.setText(data);}*/
 
-         getAllComments();
+         //getAllComments();
+    }
+   @Override
+    public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
+        //ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()).create(MessageViewModel.class);
+        mViewModel.getComments().observe(getViewLifecycleOwner(), new Observer<List<Comments>>() {
+            @Override
+            public void onChanged(List<Comments> comments) {
+                if (comments != null) {
+                    populateRecycleView(mViewModel.getComments().getValue());
+
+                    // mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,7 +96,7 @@ public class CommentsFragment extends Fragment  {
 
     }
 
-    public void getAllComments() {
+   /* public void getAllComments() {
         Bundle bundle = this.getArguments();
         int Id = bundle.getInt(ID);
         Log.d("addMessage", "the message id is: " + Id);
@@ -109,7 +129,7 @@ public class CommentsFragment extends Fragment  {
             }
         });
     }
-
+*/
     private void populateRecycleView(List<Comments> allComments) {
         RecyclerView recyclerView =(RecyclerView) findViewById(R.id.commentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
