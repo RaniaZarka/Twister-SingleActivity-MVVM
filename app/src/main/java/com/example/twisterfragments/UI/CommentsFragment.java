@@ -3,6 +3,7 @@ package com.example.twisterfragments.UI;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,8 +47,6 @@ public class CommentsFragment extends Fragment  {
     MessageViewModel mViewModel;
    // private Layout layout;
 
-
-
     public CommentsFragment() {
         // Required empty public constructor
     }
@@ -58,36 +57,6 @@ public class CommentsFragment extends Fragment  {
         setHasOptionsMenu(true);
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        message = (TextView) findViewById(R.id.commentOriginalMessage);
-        /*Bundle bundle = this.getArguments();
-           if(bundle != null) {
-             String data = bundle.getSerializable(MESSAGE).toString();
-             message.setText(data);}*/
-
-         //getAllComments();
-    }
-   @Override
-    public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
-        //ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()).create(MessageViewModel.class);
-        mViewModel.getComments().observe(getViewLifecycleOwner(), new Observer<List<Comments>>() {
-            @Override
-            public void onChanged(List<Comments> comments) {
-                if (comments != null) {
-                    populateRecycleView(mViewModel.getComments().getValue());
-
-                    // mAdapter.notifyDataSetChanged();
-                }
-            }
-        });
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,6 +64,46 @@ public class CommentsFragment extends Fragment  {
         return inflater.inflate(R.layout.fragment_comments, container, false);
 
     }
+
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
+        mViewModel.getComments().observe(getViewLifecycleOwner(), comments ->{
+           // @Override
+            //public void onChanged(List<Comments> comments) {
+                if (comments != null) {
+                    populateRecycleView(comments);
+                }
+        });
+        message.setText(mViewModel.getSelected().getContent());
+    }
+
+   @Override
+    public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+       message = (TextView) findViewById(R.id.commentOriginalMessage);
+    }
+
+    private void populateRecycleView(List<Comments> allComments) {
+        RecyclerView recyclerView =(RecyclerView) findViewById(R.id.commentRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new RecyclerViewCommentAdapter(requireContext(), allComments);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setClickListener((view, position, item) -> {
+            theComment = item;
+           /* if (position >= 0) {
+                DeleteComment(position);*/
+            Log.d("delete", "position is: "+ position);
+            Log.d("delete", "the comment to delete is:  " + item.toString());}
+        );
+    }
+
+    private View findViewById(int id) {
+        return getView().findViewById(id);}
+
+}
 
    /* public void getAllComments() {
         Bundle bundle = this.getArguments();
@@ -130,20 +139,4 @@ public class CommentsFragment extends Fragment  {
         });
     }
 */
-    private void populateRecycleView(List<Comments> allComments) {
-        RecyclerView recyclerView =(RecyclerView) findViewById(R.id.commentRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new RecyclerViewCommentAdapter(requireContext(), allComments);
-        recyclerView.setAdapter(adapter);
-        adapter.setClickListener((view, position, item) -> {
-            theComment = item;
-           /* if (position >= 0) {
-                DeleteComment(position);*/
-            Log.d("delete", "position is: "+ position);
-            Log.d("delete", "the comment to delete is:  " + item.toString());}
-        );
-    }
-    private View findViewById(int id) {
-        return getView().findViewById(id);}
 
-}

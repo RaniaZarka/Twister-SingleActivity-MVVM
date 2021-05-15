@@ -31,41 +31,66 @@ public class MessageViewModel extends ViewModel {
 
     final static String MESSAGE = "message";
     private MessageRepository mRepository;
-    private LiveData<List<Messages>> messageLiveData;
-    private LiveData<List<Comments>> commentLiveData;
+    //private LiveData<List<Messages>> messageLiveData;
+    //private LiveData<List<Comments>> commentLiveData;
     MessagesFragment messagesFragment;
+    private Messages selectedMessage;
 
     // Constructor
     public MessageViewModel() {
         mRepository = new MessageRepository();
-        this.messageLiveData=  mRepository.getMessages();
-        this.commentLiveData = mRepository.getComments();
-        //mRepository.uploadMessage();
+       // this.messageLiveData=  mRepository.getMessages();
+        //this.commentLiveData = mRepository.getComments();
+    }
+   // public LiveData<List<Messages>> getAllMessages() { return messageLiveData; }
+    //public LiveData<List<Comments>> getAllComments() { return commentLiveData; }
+
+    public void setMessages(Messages message) {
+        selectedMessage=message;
     }
 
-    private final MutableLiveData<Messages> selectedMessage = new MutableLiveData<Messages>();
-
-    public void select(Messages message) {
-        selectedMessage.setValue(message);
-    }
-
-    public LiveData<Messages> getSelected() {
+    public Messages getSelected() {
         return selectedMessage;
     }
 
-    public LiveData<List<Messages>> getAllMessages() {
+    private MutableLiveData<List<Messages>> messages;
 
-        return messageLiveData;
+    public LiveData<List<Messages>> getMessages(){
+        if(messages == null){
+            messages = new MutableLiveData<>();
+            getAndShowAllMessages();
+            Log.d(MESSAGE, "in getMessages : " + messages.toString());
+        }
+        return messages;
     }
 
-    /*public LiveData<List<Comments>> getAllComments(){
-        return commentLiveData;
-    }*/
+    public void getAndShowAllMessages() {
+        ApiServices services = ApiUtils.getMessagesService();
+        Call<List<Messages>> getAllMessagesCall = services.getAllMessages();
 
-     public  void addMessage(Messages message){
+        getAllMessagesCall.enqueue(new Callback<List<Messages>>() {
+            @Override
+            public void onResponse(Call<List<Messages>> call, Response<List<Messages>> response) {
+                Log.d(MESSAGE, response.raw().toString());
 
-     }
-    //public void addMessage(View view) {
+                if (response.isSuccessful()) {
+                    messages.setValue(response.body());
+                    Log.d(MESSAGE, " the messages are " +messages.getValue());
+
+                } else {
+                    messages.setValue(null);
+                    String message =response.code() + " " + response.message();
+                    Log.d(MESSAGE, "the problem is: " + message);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Messages>> call, Throwable t) {
+                Log.e(MESSAGE, t.getMessage());
+            }
+        });
+    }
+
+
     public void uploadMessage(Messages message ) {
 
         /*fAuth = FirebaseAuth.getInstance();
@@ -116,49 +141,34 @@ public class MessageViewModel extends ViewModel {
         public LiveData<List<Comments>> getComments () {
             if (comments == null) {
                 comments = new MutableLiveData<>();
-                Comments comment = new Comments();
-                getAndShowAllComments(comment);
-                //messages.setValue( mMessages.getValue());
+                getAndShowAllComments();
                 Log.d(MESSAGE, "in getMessages : " + comments.toString());
             }
             return comments;
         }
 
-   public void getAndShowAllComments(Comments comment) {
-      // Bundle bundle = this.getArguments();
-       // int Id = bundle.getInt(ID);
-       // Log.d("addMessage", "the message id is: " + Id);
-        //
-        //Comments comment = new Comments();
+   public void getAndShowAllComments() {
+
         ApiServices services = ApiUtils.getMessagesService();
-
-        //Call<List<Comments>> getAllCommentsCall = services.getCommentById(Id);
-        Call<List<Comments>> getAllCommentsCall = services.getCommentById(comment.getMessageId());
-
+        Call<List<Comments>> getAllCommentsCall = services.getCommentById(selectedMessage.getId());
         Log.d("addMessage", "calling all the messge: " + getAllCommentsCall.toString());
-        //comment = (TextView)findViewById(R.id.messageMessages);
 
         getAllCommentsCall.enqueue(new Callback<List<Comments>>() {
             @Override
             public void onResponse(Call<List<Comments>> call, Response<List<Comments>> response) {
                 Log.d("addMessage", "the response is: " + response.raw().toString());
-
                 if (response.isSuccessful()) {
                     List<Comments> allComments = response.body();
-
                     Log.d("addMessage", "list of all comments: " + allComments.toString());
-                   // populateRecycleView(allComments);
+
                 } else {
                     String message =  response.code() + " " + response.message();
                     Log.d("addMessage", "problem showing: " + message);
-                   // comment.setText(message);
                 }
             }
             @Override
             public void onFailure(Call<List<Comments>> call, Throwable t) {
-
                 Log.e("AddMessage", "on failure showing " + t.getMessage());
-                //comment.setText(t.getMessage());
             }
         });
     }
@@ -195,7 +205,7 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
-    }
+    }*/
 
 
    /* public void getAndShowAllMessages() {

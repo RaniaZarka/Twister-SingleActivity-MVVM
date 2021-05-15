@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.twisterfragments.Model.Comments;
+import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.R;
 
 import java.util.List;
@@ -79,6 +80,17 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
             button= (ImageButton) itemView.findViewById(R.id.commentImageDelete);
             button.setOnClickListener(this);
 
+        }
+
+
+        public void addComment(Comments comment) {
+            data.add(0, comment);
+            notifyDataSetChanged();
+        }
+
+        public void addComments(List<Comments> allComments) {
+            data.addAll(allComments);
+            notifyDataSetChanged();
         }
         @Override
         public void onClick(View view) {
