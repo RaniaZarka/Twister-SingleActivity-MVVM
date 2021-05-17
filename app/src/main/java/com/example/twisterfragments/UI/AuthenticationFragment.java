@@ -107,7 +107,7 @@ public class AuthenticationFragment extends Fragment {
     };
 
 
-            View.OnClickListener clickRegister = new View.OnClickListener() {
+    View.OnClickListener clickRegister = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
