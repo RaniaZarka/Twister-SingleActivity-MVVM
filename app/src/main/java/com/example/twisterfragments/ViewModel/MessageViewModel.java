@@ -1,25 +1,16 @@
 package com.example.twisterfragments.ViewModel;
 
-import android.app.Application;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.Model.Messages;
-import com.example.twisterfragments.R;
-import com.example.twisterfragments.Repositories.MessageRepository;
+
 import com.example.twisterfragments.UI.MessagesFragment;
-import com.example.twisterfragments.WebApi.ApiServices;
-import com.example.twisterfragments.WebApi.ApiUtils;
+import com.example.twisterfragments.WebApiServices.ApiServices;
+import com.example.twisterfragments.WebApiServices.ApiUtils;
 
 import java.util.List;
 
@@ -30,20 +21,11 @@ import retrofit2.Response;
 public class MessageViewModel extends ViewModel {
 
     final static String MESSAGE = "message";
-    private MessageRepository mRepository;
     //private LiveData<List<Messages>> messageLiveData;
     //private LiveData<List<Comments>> commentLiveData;
-    MessagesFragment messagesFragment;
-    private Messages selectedMessage;
 
-    // Constructor
-    public MessageViewModel() {
-        mRepository = new MessageRepository();
-       // this.messageLiveData=  mRepository.getMessages();
-        //this.commentLiveData = mRepository.getComments();
-    }
-   // public LiveData<List<Messages>> getAllMessages() { return messageLiveData; }
-    //public LiveData<List<Comments>> getAllComments() { return commentLiveData; }
+
+    private Messages selectedMessage;
 
     public void setMessages(Messages message) {
         selectedMessage=message;
@@ -52,6 +34,15 @@ public class MessageViewModel extends ViewModel {
     public Messages getSelected() {
         return selectedMessage;
     }
+
+    // Constructor
+    public MessageViewModel() {
+        // mRepository = new MessageRepository();
+        // this.messageLiveData=  mRepository.getMessages();
+        //this.commentLiveData = mRepository.getComments();
+    }
+    // public LiveData<List<Messages>> getAllMessages() { return messageLiveData; }
+    //public LiveData<List<Comments>> getAllComments() { return commentLiveData; }
 
     private MutableLiveData<List<Messages>> messages;
 
@@ -67,16 +58,13 @@ public class MessageViewModel extends ViewModel {
     public void getAndShowAllMessages() {
         ApiServices services = ApiUtils.getMessagesService();
         Call<List<Messages>> getAllMessagesCall = services.getAllMessages();
-
         getAllMessagesCall.enqueue(new Callback<List<Messages>>() {
             @Override
             public void onResponse(Call<List<Messages>> call, Response<List<Messages>> response) {
                 Log.d(MESSAGE, response.raw().toString());
-
                 if (response.isSuccessful()) {
                     messages.setValue(response.body());
                     Log.d(MESSAGE, " the messages are " +messages.getValue());
-
                 } else {
                     messages.setValue(null);
                     String message =response.code() + " " + response.message();
@@ -158,8 +146,8 @@ public class MessageViewModel extends ViewModel {
             public void onResponse(Call<List<Comments>> call, Response<List<Comments>> response) {
                 Log.d("addMessage", "the response is: " + response.raw().toString());
                 if (response.isSuccessful()) {
-                    List<Comments> allComments = response.body();
-                    Log.d("addMessage", "list of all comments: " + allComments.toString());
+                    comments.setValue(response.body());
+                    Log.d("addMessage", "list of all comments: " + comments.getValue());
 
                 } else {
                     String message =  response.code() + " " + response.message();

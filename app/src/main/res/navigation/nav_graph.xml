@@ -22,9 +22,4 @@
             android:id="@+id/action_nav_mesages_to_addMessageFragment"
             app:destination="@id/nav_add" />
     </fragment>
-    <fragment
-        android:id="@+id/nav_add"
-        android:name="com.example.twisterfragments.UI.AddMessageFragment"
-        android:label="Add Message"
-        tools:layout="@layout/fragment_add_message" />
 </navigation>

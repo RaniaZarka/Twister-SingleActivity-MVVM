@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,25 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.ViewModel.MessageViewModel;
-import com.example.twisterfragments.WebApi.ApiServices;
-import com.example.twisterfragments.WebApi.ApiUtils;
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewCommentAdapter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 public class CommentsFragment extends Fragment  {
 
     private static final String ID = "id";
+
     private TextView message;
+
     private TextView comment;
    // private TextView user;
    // private Messages theMessage;

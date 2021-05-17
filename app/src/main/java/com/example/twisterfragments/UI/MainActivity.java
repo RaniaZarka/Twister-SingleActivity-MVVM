@@ -43,52 +43,21 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.messages_bar, menu);
         return true;
     }
+
+    // override the onOptionsSelected method to call onNavDestinationSelected
+   // Now when the user clicks the menu Item, the app automatically navigates
+    // to the corresponding destination with the same id.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
-
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);}*/
-
-       //switch (item.getItemId()) {
-           // case R.id.nav_mesages:
-               // Navigation.findNavController(this,R.id.messagesFragment);
-                //Fragment messagesFragment = new MessagesFragment();
-
-               // return true;
-
-            //case R.id.nav_profile:
-              /*  mAuth = FirebaseAuth.getInstance();
-                FirebaseUser userfb = mAuth.getCurrentUser();
-                if (userfb == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.NotSignedIn), Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(this, ProfileActivity.class);
-                    startActivity(intent);}*/
-              /*  Toast.makeText(getApplicationContext(), "not coded yet", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.nav_search:
-
-
-                 Toast.makeText(getApplicationContext(), "not coded yet", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.nav_signin:
-                Toast.makeText(getApplicationContext(), "no sign in yet", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
 }

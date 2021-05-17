@@ -1,23 +1,15 @@
 package com.example.twisterfragments.Repositories;
 
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.savedstate.SavedStateRegistry;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.twisterfragments.Adapters.RecyclerViewCommentAdapter;
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.Model.Messages;
-import com.example.twisterfragments.R;
 import com.example.twisterfragments.UI.MessagesFragment;
-import com.example.twisterfragments.WebApi.ApiServices;
-import com.example.twisterfragments.WebApi.ApiUtils;
+import com.example.twisterfragments.WebApiServices.ApiServices;
+import com.example.twisterfragments.WebApiServices.ApiUtils;
 
 import java.util.List;
 

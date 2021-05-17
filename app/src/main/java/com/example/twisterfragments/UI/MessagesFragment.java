@@ -5,28 +5,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.savedstate.SavedStateRegistry;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.twisterfragments.Repositories.MessageRepository;
 import com.example.twisterfragments.ViewModel.MessageViewModel;
-import com.example.twisterfragments.WebApi.ApiServices;
-import com.example.twisterfragments.WebApi.ApiUtils;
 import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
@@ -34,36 +26,22 @@ import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 public class MessagesFragment extends Fragment implements View.OnTouchListener, RecyclerViewMessageAdapter.ItemClickListener {
 
     public static final String MESSAGE = "message";
     public static final String ID = "id";
-
     public static final String Email = "user";
     RecyclerView recyclerView;
     MessageViewModel mViewModel;
-    MessageRepository mRepository;
-    RecyclerViewMessageAdapter mAdapter;
-    ArrayList<Messages> messages= new ArrayList<>();
 
+    RecyclerViewMessageAdapter mAdapter;
+    //ArrayList<Messages> messages= new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-    }
-
-    @Override
-    public void onStart() {
-
-        super.onStart();
-        //UpdateRecyclerView(messages);
     }
 
     @Override
@@ -80,12 +58,9 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
      mViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
              if (messages != null) {
                  populateRecycleView(messages);
-
          }
      });
-
  }
-
 
     @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
@@ -94,6 +69,7 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.messageRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(mAdapter);
+
         Button addButton = (Button) findViewById(R.id.AllMessagesAddBtn);
         addButton.setOnClickListener(click);
 
@@ -105,12 +81,15 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
             EditText input = (EditText) findViewById(R.id.messageInput);
             String content = input.getText().toString().trim();
             String email = "Rania@gmail.com";
-            Messages message = new Messages(content, email);
-            mViewModel.uploadMessage(message);
-            mAdapter.addMessage(message);
+            if (content.isEmpty()) {
+                Toast.makeText(getContext(),"You did not write a message" , Toast.LENGTH_SHORT).show();
 
+            } else {
+                Messages message = new Messages(content, email);
+                mViewModel.uploadMessage(message);
+                mAdapter.addMessage(message);
+            }
         }
-
     };
     @Override
     public void onItemClick(Messages message) {
@@ -118,14 +97,12 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
             mViewModel.setMessages(message);
             Navigation.findNavController(getView()).navigate(R.id.nav_comments);
         }
-
     }
 
     private void populateRecycleView(List<Messages> allMessages) {
-
         mAdapter.addMessages(allMessages);
-
     }
+
     private View findViewById(int id) {
         return getView().findViewById(id);
     }

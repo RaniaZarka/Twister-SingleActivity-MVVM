@@ -1,4 +1,4 @@
-package com.example.twisterfragments.WebApi;
+package com.example.twisterfragments.WebApiServices;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
