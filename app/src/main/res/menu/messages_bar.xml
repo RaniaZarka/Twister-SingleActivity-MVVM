@@ -9,29 +9,12 @@
         android:title="Add"
         app:iconTint="@color/white"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/nav_add"
-        android:icon="@drawable/baseline_account_circle_black_18dp"
-        app:showAsAction="always"
-        app:iconTint="@color/white"
-        android:title="Profile">
-    </item>
-    <item
-        android:id="@+id/nav_search"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/person_search"
-        app:iconTint="@color/white"
-        android:title="Search">
-    </item>
+
     <item
         android:id="@+id/nav_signin"
         android:icon="@drawable/baseline_logout_black_18dp"
         app:iconTint="@color/white"
         android:title="Signin"
-        app:showAsAction="ifRoom"/>
-
-
-
-
+        app:showAsAction="always"/>
 
 </menu>

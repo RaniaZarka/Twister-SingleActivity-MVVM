@@ -13,8 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.ViewModel.MessageViewModel;
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.R;
@@ -25,18 +29,15 @@ import java.util.List;
 
 public class CommentsFragment extends Fragment  {
 
-    private static final String ID = "id";
-
     private TextView message;
 
     private TextView comment;
-   // private TextView user;
-   // private Messages theMessage;
+
     private Comments theComment;
     //private ImageButton imageButton;
     //public static final String Email = "user";
     //FirebaseAuth fAuth;
-    public static final String MESSAGE = "message";
+    public static final String COMMENT = "comment";
     RecyclerViewCommentAdapter adapter;
     MessageViewModel mViewModel;
    // private Layout layout;
@@ -64,8 +65,7 @@ public class CommentsFragment extends Fragment  {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
         mViewModel.getComments().observe(getViewLifecycleOwner(), comments ->{
-           // @Override
-            //public void onChanged(List<Comments> comments) {
+
                 if (comments != null) {
                     populateRecycleView(comments);
                 }
@@ -77,6 +77,8 @@ public class CommentsFragment extends Fragment  {
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
        message = (TextView) findViewById(R.id.commentOriginalMessage);
+       Button addButton = (Button) findViewById(R.id.CommentAddBtn);
+       addButton.setOnClickListener(click);
     }
 
     private void populateRecycleView(List<Comments> allComments) {
@@ -84,15 +86,39 @@ public class CommentsFragment extends Fragment  {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new RecyclerViewCommentAdapter(requireContext(), allComments);
         recyclerView.setAdapter(adapter);
+        //private void populateRecycleView(List<Messages> allMessages) {
+            //adapter.addComments(allComments);
+        }
 
-        adapter.setClickListener((view, position, item) -> {
+      /*  adapter.setClickListener((view, position, item) -> {
             theComment = item;
            /* if (position >= 0) {
                 DeleteComment(position);*/
-            Log.d("delete", "position is: "+ position);
+    /* Log.d("delete", "position is: "+ position);
             Log.d("delete", "the comment to delete is:  " + item.toString());}
-        );
-    }
+        );*/
+    //}
+
+    View.OnClickListener click = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            EditText input = (EditText) findViewById(R.id.commentInput);
+            String content = input.getText().toString().trim();
+            Log.d(COMMENT, " the content is  " +content);
+            String email = "Rania@gmail.com";
+            int messageId = message.getId();
+            Log.d(COMMENT, " the id is   " + messageId);
+            if (content.isEmpty()) {
+                Toast.makeText(getContext(),"You did not write a comment" , Toast.LENGTH_SHORT).show();
+
+            } else {
+                Comments comment = new Comments(content, email);
+                Log.d(COMMENT, " the comment is  " + comment);
+                mViewModel.UploadComment( messageId, comment);
+                adapter.addComment(comment);
+            }
+        }
+    };
 
     private View findViewById(int id) {
         return getView().findViewById(id);}

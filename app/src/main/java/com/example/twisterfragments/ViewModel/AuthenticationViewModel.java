@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,25 +27,38 @@ public class AuthenticationViewModel extends ViewModel {
     private MutableLiveData<FirebaseUser> userLiveData;
     private MutableLiveData<Boolean> loggedOutLiveData;
 
+    public AuthenticationViewModel(){
+
+    }
+
     public AuthenticationViewModel (Application application){
         this.application = application;
      this.firebaseAuth = FirebaseAuth.getInstance();
-     this.userLiveData = new MutableLiveData<>();
-     this.loggedOutLiveData = new MutableLiveData<>();
+    // this.userLiveData = new MutableLiveData<>();
+    // this.loggedOutLiveData = new MutableLiveData<>();
 
+// this will check if the user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
             userLiveData.postValue(firebaseAuth.getCurrentUser());
             loggedOutLiveData.postValue(false);
         }
     }
-
-    public MutableLiveData<FirebaseUser> getUserLiveData() {
-        return userLiveData;
-    }
-
     public MutableLiveData<Boolean> getLoggedOutLiveData() {
         return loggedOutLiveData;
     }
+
+    public MutableLiveData<FirebaseUser> getUserLiveData() {
+        return userLiveData;}
+
+   /* @RequiresApi(api = Build.VERSION_CODES.P)
+    public LiveData<FirebaseUser> getUserLiveData(){
+        if(userLiveData!= null){
+            userLiveData = new MutableLiveData<>();
+            //login(email, password);
+        }
+         return userLiveData;
+    }*/
+
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void register(String email, String password) {

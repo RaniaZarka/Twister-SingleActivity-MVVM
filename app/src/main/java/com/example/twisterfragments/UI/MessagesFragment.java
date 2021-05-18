@@ -34,6 +34,7 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
     public static final String Email = "user";
     RecyclerView recyclerView;
     MessageViewModel mViewModel;
+    Button addButton;
 
     RecyclerViewMessageAdapter mAdapter;
     //ArrayList<Messages> messages= new ArrayList<>();
@@ -42,6 +43,11 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+    @Override
+    public void onStart() {
+
+        super.onStart();
     }
 
     @Override
@@ -60,6 +66,7 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
                  populateRecycleView(messages);
          }
      });
+    // addButton.setOnClickListener(click);
  }
 
     @Override
@@ -70,9 +77,8 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(mAdapter);
 
-        Button addButton = (Button) findViewById(R.id.AllMessagesAddBtn);
+        addButton = (Button) findViewById(R.id.AllMessagesAddBtn);
         addButton.setOnClickListener(click);
-
 
     }
     View.OnClickListener click = new View.OnClickListener() {

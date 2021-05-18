@@ -43,10 +43,10 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewCommentAdapter.MyViewHolder holder, int position) {
         Comments comment = data.get(position);
-        Log.d(LOG_TAG, "onBindViewHolder " + data.toString());
+        Log.d(LOG_TAG, "onBindViewHolder comments " + data.toString());
         holder.UsertextView.setText(comment.getUser());
         holder.ContenttextView.setText(comment.getContent());
-        Log.d(LOG_TAG, "onBindViewHolder called " + position);
+        Log.d(LOG_TAG, "onBindViewHolder called comments " + position);
     }
 
 
@@ -59,6 +59,16 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
     Comments getItem(int id){
 
         return data.get(id);
+    }
+
+    public void addComment(Comments comment) {
+        data.add(0, comment);
+        notifyDataSetChanged();
+    }
+
+    public void addComments(List<Comments> allComments) {
+        data.addAll(allComments);
+        notifyDataSetChanged();
     }
 
 
@@ -82,16 +92,6 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
 
         }
 
-
-        public void addComment(Comments comment) {
-            data.add(0, comment);
-            notifyDataSetChanged();
-        }
-
-        public void addComments(List<Comments> allComments) {
-            data.addAll(allComments);
-            notifyDataSetChanged();
-        }
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {

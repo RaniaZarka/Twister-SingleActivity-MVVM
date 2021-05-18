@@ -40,6 +40,7 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth= FirebaseAuth.getInstance();
 
     }
 
@@ -54,16 +55,17 @@ public class AuthenticationFragment extends Fragment {
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         aViewModel = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
-        aViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+       // aViewModel.getUserLiveData().observe(this,Observer){
+
+        //}
+   /* observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null) {
-                   // Navigation.findNavController(getView()).navigate(R.id.action_loginRegisterFragment_to_loggedInFragment);
+                    Navigation.findNavController(getView()).navigate(R.id.nav_mesages);
                 }
             }
-        });
-
-
+        });*/
     }
 
     @Override

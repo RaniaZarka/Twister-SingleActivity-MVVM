@@ -46,6 +46,11 @@ public class Comments implements Serializable {
         this.user = user;
     }
 
+    public Comments(String content, String user) {
+        this.content = content;
+        this.user= user;
+    }
+
     public Integer getId() {
         return id;
     }

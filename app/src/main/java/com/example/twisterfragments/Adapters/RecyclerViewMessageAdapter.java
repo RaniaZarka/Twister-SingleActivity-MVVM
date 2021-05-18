@@ -42,10 +42,14 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull RecyclerViewMessageAdapter.MyViewHolder holder, int position) {
         Messages message = data.get(position);
         Log.d(LOG_TAG, "onBindViewHolder " + data.toString());
-        String comments = Integer.toString(message.getTotalComments());
+        if(message.getTotalComments()!=null){
+            String comments = Integer.toString(message.getTotalComments());
+            holder.TotalTextView.setText(comments + " comments");
+        }else{
+            holder.TotalTextView.setText("0 comments");
+        }
         holder.UsertextView.setText(message.getUser());
         holder.ContenttextView.setText(message.getContent());
-        holder.TotalTextView.setText(comments + " comments");
         Log.d(LOG_TAG, "onBindViewHolder called " + position);
     }
 
