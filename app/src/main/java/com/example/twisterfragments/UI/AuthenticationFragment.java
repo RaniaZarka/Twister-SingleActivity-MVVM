@@ -88,8 +88,10 @@ public class AuthenticationFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
-            aViewModel.logOut();
-            Toast.makeText(getContext(),"Your Are Signed Out", Toast.LENGTH_LONG).show();
+            if (mAuth.getCurrentUser() != null) {
+                aViewModel.logOut();
+                Toast.makeText(getContext(), "Your Are Signed Out", Toast.LENGTH_LONG).show();
+            }
         }
 
     };
@@ -102,13 +104,18 @@ public class AuthenticationFragment extends Fragment {
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Login", "the email is " + email + "the password is " + password);
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
-            } else {
+            if(mAuth.getCurrentUser()!= null) {
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
+                } else {
 
-                aViewModel.login(email, password);
-                Log.d("Login", " calling login from VM "+" the email is " + email + "the password is " + password);
+                    aViewModel.login(email, password);
+                    Log.d("Login", " calling login from VM " + " the email is " + email + "the password is " + password);
+                }
             }
+            else
+                //Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
+            Log.d("Login", " calling login from VM 2 " + " error");
         }
     };
 
@@ -121,12 +128,14 @@ public class AuthenticationFragment extends Fragment {
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Register", "the email is " + email + " the password is " + password);
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
-            } else {
-                 FirebaseUser user= mAuth.getCurrentUser();
-                Log.d("Register", "Current user is  " + user);
-                aViewModel.register(email, password);
+            if(mAuth.getCurrentUser()!= null) {
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
+                } else {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Log.d("Register", "Current user is  " + user);
+                    aViewModel.register(email, password);
+                }
             }
         }
     };

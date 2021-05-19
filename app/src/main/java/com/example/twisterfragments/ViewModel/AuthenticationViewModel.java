@@ -31,6 +31,16 @@ public class AuthenticationViewModel extends ViewModel {
    // private MutableLiveData<FirebaseUser> userLiveData;
     private MutableLiveData<Boolean> loggedOutLiveData;
 
+    private FirebaseUser selectedUser;
+
+    public void setUser(FirebaseUser user) {
+        selectedUser = user;
+    }
+
+    public FirebaseUser getSelectedUser() {
+        return selectedUser;
+    }
+
     public AuthenticationViewModel(){
 
     }
@@ -51,7 +61,11 @@ public class AuthenticationViewModel extends ViewModel {
         return loggedOutLiveData;
     }
 
-   // public MutableLiveData<FirebaseUser> getUserLiveData() {
+
+
+
+
+    // public MutableLiveData<FirebaseUser> getUserLiveData() {
        // return userLiveData;}
 
 
