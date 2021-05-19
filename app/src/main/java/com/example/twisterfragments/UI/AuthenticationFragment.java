@@ -110,7 +110,7 @@ public class AuthenticationFragment extends Fragment {
                 } else {
 
                     aViewModel.login(email, password);
-                    Log.d("Login", " calling login from VM " + " the email is " + email + "the password is " + password);
+                    Log.d("Login", " calling login from VM: " + " the email is " + email + "the password is " + password);
                 }
             }
             else
