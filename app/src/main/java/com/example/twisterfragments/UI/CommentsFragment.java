@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.ViewModel.MessageViewModel;
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.R;
@@ -29,7 +28,7 @@ import java.util.List;
 
 public class CommentsFragment extends Fragment  {
 
-    private TextView message;
+    private TextView messageTextView;
 
     private TextView comment;
 
@@ -67,16 +66,16 @@ public class CommentsFragment extends Fragment  {
         mViewModel.getComments().observe(getViewLifecycleOwner(), comments ->{
 
                 if (comments != null) {
-                    populateRecycleView(comments);
-                }
+
+               populateRecycleView(comments);}
         });
-        message.setText(mViewModel.getSelected().getContent());
+        messageTextView.setText(mViewModel.getSelected().getContent());
     }
 
    @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       message = (TextView) findViewById(R.id.commentOriginalMessage);
+       messageTextView = (TextView) findViewById(R.id.commentOriginalMessage);
        Button addButton = (Button) findViewById(R.id.CommentAddBtn);
        addButton.setOnClickListener(click);
     }
@@ -106,13 +105,13 @@ public class CommentsFragment extends Fragment  {
             String content = input.getText().toString().trim();
             Log.d(COMMENT, " the content is  " +content);
             String email = "Rania@gmail.com";
-            int messageId = message.getId();
+            int messageId = mViewModel.getSelected().getId();
             Log.d(COMMENT, " the id is   " + messageId);
             if (content.isEmpty()) {
                 Toast.makeText(getContext(),"You did not write a comment" , Toast.LENGTH_SHORT).show();
 
             } else {
-                Comments comment = new Comments(content, email);
+                Comments comment = new Comments(messageId, content, email );
                 Log.d(COMMENT, " the comment is  " + comment);
                 mViewModel.UploadComment( messageId, comment);
                 adapter.addComment(comment);
@@ -124,39 +123,4 @@ public class CommentsFragment extends Fragment  {
         return getView().findViewById(id);}
 
 }
-
-   /* public void getAllComments() {
-        Bundle bundle = this.getArguments();
-        int Id = bundle.getInt(ID);
-        Log.d("addMessage", "the message id is: " + Id);
-        ApiServices services = ApiUtils.getMessagesService();
-        Call<List<Comments>> getAllCommentsCall = services.getCommentById(Id);
-        Log.d("addMessage", "calling all the messge: " + getAllCommentsCall.toString());
-        comment = (TextView)findViewById(R.id.messageMessages);
-
-        getAllCommentsCall.enqueue(new Callback<List<Comments>>() {
-            @Override
-            public void onResponse(Call<List<Comments>> call, Response<List<Comments>> response) {
-                Log.d("addMessage", "the response is: " + response.raw().toString());
-
-                if (response.isSuccessful()) {
-                    List<Comments> allComments = response.body();
-
-                    Log.d("addMessage", "list of all comments: " + allComments.toString());
-                    populateRecycleView(allComments);
-                } else {
-                    String message =  response.code() + " " + response.message();
-                    Log.d("addMessage", "problem showing: " + message);
-                    comment.setText(message);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Comments>> call, Throwable t) {
-
-                Log.e("AddMessage", "on failure showing " + t.getMessage());
-                comment.setText(t.getMessage());
-            }
-        });
-    }
-*/
 

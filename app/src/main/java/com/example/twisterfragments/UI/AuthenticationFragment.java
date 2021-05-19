@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class AuthenticationFragment extends Fragment {
     Button registerButton;
     Button logoutButton;
 
-    private static  final String TAG ="autoSignin";
+    //private static  final String TAG ="autoSignin";
     private AuthenticationViewModel aViewModel;
 
     @Override
@@ -54,18 +55,18 @@ public class AuthenticationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+       // FirebaseUser currentUser = mAuth.getCurrentUser();
         aViewModel = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
-       // aViewModel.getUserLiveData().observe(this,Observer){
+        aViewModel.getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
+            if( firebaseUser !=null){
+                logoutButton.setEnabled(true);
+            } else {
+                logoutButton.setEnabled(false);
 
-        //}
-   /* observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null) {
-                    Navigation.findNavController(getView()).navigate(R.id.nav_mesages);
-                }
             }
-        });*/
+
+
+      });
     }
 
     @Override
@@ -88,6 +89,7 @@ public class AuthenticationFragment extends Fragment {
         @Override
         public void onClick(View view) {
             aViewModel.logOut();
+            Toast.makeText(getContext(),"Your Are Signed Out", Toast.LENGTH_LONG).show();
         }
 
     };
@@ -99,11 +101,13 @@ public class AuthenticationFragment extends Fragment {
 
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
+            Log.d("Login", "the email is " + email + "the password is " + password);
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
             } else {
 
                 aViewModel.login(email, password);
+                Log.d("Login", " calling login from VM "+" the email is " + email + "the password is " + password);
             }
         }
     };
@@ -116,11 +120,12 @@ public class AuthenticationFragment extends Fragment {
 
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
-
+            Log.d("Register", "the email is " + email + " the password is " + password);
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
             } else {
-
+                 FirebaseUser user= mAuth.getCurrentUser();
+                Log.d("Register", "Current user is  " + user);
                 aViewModel.register(email, password);
             }
         }

@@ -37,7 +37,7 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
     Button addButton;
 
     RecyclerViewMessageAdapter mAdapter;
-    //ArrayList<Messages> messages= new ArrayList<>();
+    ArrayList<Messages> messages= new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
                  populateRecycleView(messages);
          }
      });
-    // addButton.setOnClickListener(click);
  }
 
     @Override
@@ -94,6 +93,7 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
                 Messages message = new Messages(content, email);
                 mViewModel.uploadMessage(message);
                 mAdapter.addMessage(message);
+
             }
         }
     };

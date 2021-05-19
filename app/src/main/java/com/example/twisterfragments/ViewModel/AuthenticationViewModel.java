@@ -15,16 +15,20 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.twisterfragments.Model.Messages;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+import java.util.Objects;
+
 public class AuthenticationViewModel extends ViewModel {
     private Application application;
     private FirebaseAuth firebaseAuth;
-    private MutableLiveData<FirebaseUser> userLiveData;
+   // private MutableLiveData<FirebaseUser> userLiveData;
     private MutableLiveData<Boolean> loggedOutLiveData;
 
     public AuthenticationViewModel(){
@@ -34,8 +38,8 @@ public class AuthenticationViewModel extends ViewModel {
     public AuthenticationViewModel (Application application){
         this.application = application;
      this.firebaseAuth = FirebaseAuth.getInstance();
-    // this.userLiveData = new MutableLiveData<>();
-    // this.loggedOutLiveData = new MutableLiveData<>();
+     this.userLiveData = new MutableLiveData<>();
+     this.loggedOutLiveData = new MutableLiveData<>();
 
 // this will check if the user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
@@ -47,27 +51,33 @@ public class AuthenticationViewModel extends ViewModel {
         return loggedOutLiveData;
     }
 
-    public MutableLiveData<FirebaseUser> getUserLiveData() {
-        return userLiveData;}
+   // public MutableLiveData<FirebaseUser> getUserLiveData() {
+       // return userLiveData;}
 
-   /* @RequiresApi(api = Build.VERSION_CODES.P)
-    public LiveData<FirebaseUser> getUserLiveData(){
-        if(userLiveData!= null){
+
+    private MutableLiveData<FirebaseUser> userLiveData;
+
+    public LiveData<FirebaseUser> getUserLiveData() {
+
+        if ( userLiveData== null) {
             userLiveData = new MutableLiveData<>();
-            //login(email, password);
-        }
-         return userLiveData;
-    }*/
 
+            //getAndShowAllMessages();//Log.d(MESSAGE, "in getMessages : " + messages.toString());
+        }
+        return userLiveData;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void register(String email, String password) {
+
         firebaseAuth.createUserWithEmailAndPassword(email, password)
+
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             userLiveData.postValue(firebaseAuth.getCurrentUser());
+                            Log.d("register", "Current user is  " + Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
                         } else {
                             Toast.makeText(application.getApplicationContext(), "Registration Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }

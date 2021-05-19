@@ -85,7 +85,7 @@ public class Comments implements Serializable {
 
     @Override
     public String toString() {
-        return user + " : " + content;
+        return user + " : " + content + " messageID " + messageId + " ID " + id;
     }
 
 }

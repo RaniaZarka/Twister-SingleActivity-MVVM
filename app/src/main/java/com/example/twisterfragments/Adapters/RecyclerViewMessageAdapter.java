@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.R;
+import com.example.twisterfragments.UI.MessagesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final String LOG_TAG = "Messages";
     private List<Messages> data;
     private final LayoutInflater mInflater;
-    private final ItemClickListener mClickListener;
+    private  final ItemClickListener mClickListener;
 
 
     public RecyclerViewMessageAdapter(Context context, ItemClickListener mClickListener) {
@@ -29,6 +30,7 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
         this.mClickListener = mClickListener;
         Log.d(LOG_TAG, data.toString());
     }
+
 
     @NonNull
     @Override
@@ -70,8 +72,10 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void addMessages(List<Messages> allMessages) {
+
         data.addAll(allMessages);
         notifyDataSetChanged();
+
     }
 
     //public interface ItemClickListener <T> {
