@@ -80,7 +80,16 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
+    private MutableLiveData<Messages> messageLiveData;
 
+    public LiveData<Messages> uploadTheMessage() {
+        if (messageLiveData == null) {
+            messageLiveData = new MutableLiveData<>();
+            getAndShowAllMessages();
+            Log.d(MESSAGE, "in getMessages : " + messages.toString());
+        }
+        return messageLiveData;
+    }
     public void uploadMessage(Messages message) {
 
         ApiServices services = ApiUtils.getMessagesService();
@@ -89,8 +98,9 @@ public class MessageViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Messages> call, Response<Messages> response) {
                 if (response.isSuccessful()) {
-                    Messages newMessage = response.body();
 
+                    Messages newMessage = response.body();
+                    messageLiveData.setValue(newMessage);
                     Log.d(MESSAGE, "the new message is: " + newMessage.toString());
 
                 } else {
@@ -105,14 +115,16 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
+
+
     private MutableLiveData<List<Comments>> comments;
 
     public LiveData<List<Comments>> getComments() {
-        if (comments == null) {
+        //if (comments == null) {
             comments = new MutableLiveData<>();
             getAndShowAllComments();
             Log.d(MESSAGE, "in getMessages : " + comments.toString());
-        }
+
         return comments;
     }
 
@@ -128,11 +140,11 @@ public class MessageViewModel extends ViewModel {
                 Log.d("addMessage", "the response is: " + response.raw().toString());
                 if (response.isSuccessful()) {
                     comments.setValue(response.body());
-                    Log.d("addMessage", "list of all comments: " + comments.getValue());
+                    Log.d("addComment", "list of all comments: " + comments.getValue());
 
                 } else {
                     String message = response.code() + " " + response.message();
-                    Log.d("addMessage", "problem showing: " + message);
+                    Log.d("addComment", "problem showing: " + message);
                 }
             }
 

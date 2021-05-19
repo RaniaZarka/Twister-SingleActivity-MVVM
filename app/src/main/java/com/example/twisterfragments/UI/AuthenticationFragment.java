@@ -128,7 +128,8 @@ public class AuthenticationFragment extends Fragment {
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Register", "the email is " + email + " the password is " + password);
-            if(mAuth.getCurrentUser()!= null) {
+
+            if(mAuth.getCurrentUser()== null) {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
@@ -137,6 +138,7 @@ public class AuthenticationFragment extends Fragment {
                     aViewModel.register(email, password);
                 }
             }
+
         }
     };
     private View findViewById(int id) {

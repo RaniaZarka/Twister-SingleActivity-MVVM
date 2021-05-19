@@ -22,6 +22,7 @@ import com.example.twisterfragments.ViewModel.MessageViewModel;
 import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
     public static final String MESSAGE = "message";
     public static final String ID = "id";
     public static final String Email = "user";
+
+    FirebaseAuth mAuth;
+
     RecyclerView recyclerView;
     MessageViewModel mViewModel;
     Button addButton;
@@ -66,7 +70,19 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
                  populateRecycleView(messages);
          }
      });
+     mViewModel.uploadTheMessage().observe(getViewLifecycleOwner(), messages -> {
+         if (messages != null) {
+             mAdapter.addMessage(messages);
+             //populateRecycleView(messages);
+         }
+     });
  }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.getAndShowAllMessages();
+    }
 
     @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
@@ -85,14 +101,16 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
         public void onClick(View view) {
             EditText input = (EditText) findViewById(R.id.messageInput);
             String content = input.getText().toString().trim();
-            String email = "Rania@gmail.com";
+            mAuth = FirebaseAuth.getInstance();
+            String email = mAuth.getCurrentUser().getEmail();
             if (content.isEmpty()) {
                 Toast.makeText(getContext(),"You did not write a message" , Toast.LENGTH_SHORT).show();
 
             } else {
                 Messages message = new Messages(content, email);
                 mViewModel.uploadMessage(message);
-                mAdapter.addMessage(message);
+
+
 
             }
         }

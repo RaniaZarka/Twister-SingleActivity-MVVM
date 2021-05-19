@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 import java.util.Objects;
 
-public class AuthenticationViewModel extends ViewModel {
+public class AuthenticationViewModel extends AndroidViewModel {
     private Application application;
     private FirebaseAuth firebaseAuth;
    // private MutableLiveData<FirebaseUser> userLiveData;
@@ -41,11 +42,10 @@ public class AuthenticationViewModel extends ViewModel {
         return selectedUser;
     }
 
-    public AuthenticationViewModel(){
 
-    }
 
     public AuthenticationViewModel (Application application){
+        super(application);
         this.application = application;
      this.firebaseAuth = FirebaseAuth.getInstance();
      this.userLiveData = new MutableLiveData<>();
@@ -107,6 +107,7 @@ public class AuthenticationViewModel extends ViewModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             userLiveData.postValue(firebaseAuth.getCurrentUser());
+                            Toast.makeText(application.getApplicationContext(), "You are logged in  " , Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(application.getApplicationContext(), "Login Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }

@@ -22,6 +22,7 @@ import com.example.twisterfragments.ViewModel.MessageViewModel;
 import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewCommentAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ import java.util.List;
 public class CommentsFragment extends Fragment  {
 
     private TextView messageTextView;
-
+    FirebaseAuth mAuth;
     private TextView comment;
 
     private Comments theComment;
@@ -104,7 +105,9 @@ public class CommentsFragment extends Fragment  {
             EditText input = (EditText) findViewById(R.id.commentInput);
             String content = input.getText().toString().trim();
             Log.d(COMMENT, " the content is  " +content);
-            String email = "Rania@gmail.com";
+            //String email  = input.getText().toString().trim();
+            mAuth = FirebaseAuth.getInstance();
+            String email = mAuth.getCurrentUser().getEmail();
             int messageId = mViewModel.getSelected().getId();
             Log.d(COMMENT, " the id is   " + messageId);
             if (content.isEmpty()) {
