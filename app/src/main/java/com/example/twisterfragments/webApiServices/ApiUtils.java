@@ -1,4 +1,4 @@
-package com.example.twisterfragments.WebApiServices;
+package com.example.twisterfragments.webApiServices;
 
 public class ApiUtils {
     private static final String BASE_URL= "https://anbo-restmessages.azurewebsites.net/api/";

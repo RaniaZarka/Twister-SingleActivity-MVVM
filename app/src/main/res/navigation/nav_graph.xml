@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/nav_comments"
-        android:name="com.example.twisterfragments.UI.CommentsFragment"
+        android:name="com.example.twisterfragments.ui.CommentsFragment"
         android:label="Comments"
         tools:layout="@layout/fragment_comments" />
     <fragment
         android:id="@+id/nav_mesages"
-        android:name="com.example.twisterfragments.UI.MessagesFragment"
+        android:name="com.example.twisterfragments.ui.MessagesFragment"
         android:label="Messages"
         tools:layout="@layout/fragment_messages">
         <action
@@ -24,8 +24,8 @@
     </fragment>
     <fragment
         android:id="@+id/nav_signin"
-        android:name="com.example.twisterfragments.UI.SignInOutFragment"
-        android:label="AuthenticationFragment"
+        android:name="com.example.twisterfragments.ui.SignInOutFragment"
+        android:label="Login"
         app:startDestination="@id/action_nav_signin_to_nav_mesages">
         <action
             android:id="@+id/action_nav_signin_to_registerFragment"
@@ -36,6 +36,6 @@
     </fragment>
     <fragment
         android:id="@+id/nav_register"
-        android:name="com.example.twisterfragments.UI.RegisterFragment"
-        android:label="RegisterFragment" />
+        android:name="com.example.twisterfragments.ui.RegisterFragment"
+        android:label="Register" />
 </navigation>

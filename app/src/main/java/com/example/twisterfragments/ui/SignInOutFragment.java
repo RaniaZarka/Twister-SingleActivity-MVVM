@@ -1,4 +1,4 @@
-package com.example.twisterfragments.UI;
+package com.example.twisterfragments.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -19,9 +19,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.twisterfragments.R;
-import com.example.twisterfragments.ViewModel.AuthenticationViewModel;
+import com.example.twisterfragments.viewModel.AuthenticationViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignInOutFragment extends Fragment {
     private FirebaseAuth mAuth;
@@ -31,7 +30,6 @@ public class SignInOutFragment extends Fragment {
     Button logoutButton;
     Button register;
 
-    //private static  final String TAG ="autoSignin";
     private AuthenticationViewModel aViewModel;
 
     @Override
@@ -109,22 +107,15 @@ public class SignInOutFragment extends Fragment {
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Login", "the email is " + email + " the password is " + password);
-            if(mAuth.getCurrentUser()!= null) {
+
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
-
                     aViewModel.login(email, password);
                     Log.d("Login", " calling login from VM: " + " the email is " + email + "the password is " + password);
                 }
             }
-            else
-                Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
-            Log.d("Login", " calling login from VM 2 " + " error");
-        }
     };
-
-
 
     private View findViewById(int id) {
         return getView().findViewById(id);

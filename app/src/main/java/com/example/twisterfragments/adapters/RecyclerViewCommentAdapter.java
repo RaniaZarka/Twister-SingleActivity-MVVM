@@ -1,4 +1,4 @@
-package com.example.twisterfragments.Adapters;
+package com.example.twisterfragments.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,19 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.twisterfragments.Model.Comments;
-import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.model.Comments;
 import com.example.twisterfragments.R;
 
 import java.util.List;
 
 public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerViewCommentAdapter.MyViewHolder> {
     private static final String LOG_TAG = "Comments";
-    private List<Comments> data;
+    private final List<Comments> data;
     private final LayoutInflater mInflater;
     private RecyclerViewCommentAdapter.ItemClickListener mClickListener;
-    private ImageButton button;
-    private Context mContext;
+
 
 
     public RecyclerViewCommentAdapter(Context context, List<Comments> data) {
@@ -56,24 +54,10 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
         Log.d(LOG_TAG, "getItemCount called: " + count);
         return count;
     }
-    Comments getItem(int id){
-
-        return data.get(id);
-    }
 
     public void addComment(Comments comment) {
         data.add(0, comment);
         notifyDataSetChanged();
-    }
-
-    public void addComments(List<Comments> allComments) {
-        data.addAll(allComments);
-        notifyDataSetChanged();
-    }
-
-
-    public void setClickListener(RecyclerViewCommentAdapter.ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
     }
 
     public interface ItemClickListener<T> {
@@ -82,13 +66,13 @@ public class RecyclerViewCommentAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView UsertextView, ContenttextView;
-        final ImageButton button;
+        //final ImageButton button;
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             UsertextView = itemView.findViewById(R.id.recyclerCommentUser);
             ContenttextView = itemView.findViewById(R.id.recyclerCommentContent);
-            button= (ImageButton) itemView.findViewById(R.id.commentImageDelete);
-            button.setOnClickListener(this);
+            //button=  itemView.findViewById(R.id.commentImageDelete);
+            //button.setOnClickListener(this);
 
         }
 

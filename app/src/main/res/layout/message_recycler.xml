@@ -29,7 +29,6 @@
         android:id="@+id/recyclerContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:paddingLeft="10dp"
 
 
@@ -40,7 +39,6 @@
         android:id="@+id/recyclerTotalComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:text="TextView"
         android:paddingLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"

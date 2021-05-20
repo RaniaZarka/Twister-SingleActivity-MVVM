@@ -1,4 +1,4 @@
-package com.example.twisterfragments.UI;
+package com.example.twisterfragments.ui;
 
 import android.os.Bundle;
 
@@ -10,38 +10,30 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.twisterfragments.ViewModel.MessageViewModel;
-import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.viewModel.MessageViewModel;
+import com.example.twisterfragments.model.Messages;
 import com.example.twisterfragments.R;
-import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
+import com.example.twisterfragments.adapters.RecyclerViewMessageAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class MessagesFragment extends Fragment implements View.OnTouchListener, RecyclerViewMessageAdapter.ItemClickListener {
-
-    public static final String MESSAGE = "message";
-    public static final String ID = "id";
-    public static final String Email = "user";
-
+public class MessagesFragment extends Fragment {
     FirebaseAuth mAuth;
-
     MessageViewModel mViewModel;
-    Button addButton;
-
     RecyclerViewMessageAdapter mAdapter;
-
+    Button addButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,11 +57,6 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
                  populateRecycleView(messages);
          }
      });
-     mViewModel.uploadTheMessage().observe(getViewLifecycleOwner(), messages -> {
-         if (messages != null) {
-             mAdapter.addMessage(messages);
-         }
-     });
  }
 
     @Override
@@ -81,10 +68,15 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
     @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new RecyclerViewMessageAdapter(requireContext(),  this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.messageRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(mAdapter);
+        TextView text = (TextView) findViewById(R.id.welcome);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser userfb = mAuth.getCurrentUser();
+        if (userfb == null) {
+            text.setText("Welcome ");
+        } else {
+            String user= mAuth.getCurrentUser().getEmail();
+
+            text.setText("Welcome, " +  user);}
 
         addButton = (Button) findViewById(R.id.AllMessagesAddBtn);
         addButton.setOnClickListener(addclick);
@@ -106,30 +98,32 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
 
                 } else {
                     Messages message = new Messages(content, email);
+                    Log.d("addMessage", " in else the message is  " + message);
                     mViewModel.uploadMessage(message);
+
+                    mAdapter.addMessage(message);
                 }
             }
         }
     };
-    @Override
-    public void onItemClick(Messages message) {
-        if (getView() != null) {
-            mViewModel.setMessages(message);
-            Navigation.findNavController(getView()).navigate(R.id.nav_comments);
-        }
-    }
 
     private void populateRecycleView(List<Messages> allMessages) {
-        mAdapter.addMessages(allMessages);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.messageRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+         mAdapter= new RecyclerViewMessageAdapter(requireContext(), allMessages);
+        recyclerView.setAdapter(mAdapter);
+
+        mAdapter.setClickListener((view, position, item) -> {
+            Messages message = item;
+            if (getView() != null) {
+                mViewModel.setMessages(message);
+                Navigation.findNavController(getView()).navigate(R.id.nav_comments);
+            }
+        });
     }
 
     private View findViewById(int id) {
         return getView().findViewById(id);
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return true;
     }
 
 }

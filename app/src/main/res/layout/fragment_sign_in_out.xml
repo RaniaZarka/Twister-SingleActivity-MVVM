@@ -60,18 +60,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:background="@drawable/rouded_button"
-            android:onClick="login"
             android:id="@+id/mainSignInbtn"
-            android:text="Signin" />
+            android:text="Sign in" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:background="@drawable/rouded_button"
-            android:onClick="logout"
             android:id="@+id/mainSignoutBtn"
-            android:text="SignOut" />
+            android:text="Sign Out" />
 
         <TextView
             android:id="@+id/mainWelcome"
@@ -87,14 +85,15 @@
 
     <Button
         android:id="@+id/mainSignupBtn"
-        android:layout_width="match_parent"
+        android:layout_width="151dp"
         android:layout_height="67dp"
         android:layout_margin="6dp"
-        
-        android:textColor="@color/blue"
-        android:textSize="16dp"
-        android:text="Sign Up"
 
-               />
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textColorLink="@color/white"
+        android:textSize="16dp"
+
+        />
 
 </LinearLayout>

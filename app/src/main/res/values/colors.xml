@@ -10,7 +10,7 @@
     <color name="blue">#87cefa</color>
     <color name="grey">#cdc9c9</color>
     <color name="Stalegrey">#708090</color>
-    <color name="whiteGost">#f5f5f5</color>
-    <color name="blueGost"> #f0ffff</color>
+    <color name="whiteGhost">#f5f5f5</color>
+    <color name="blueGhost"> #f0ffff</color>
     <color name ="bluelight"> #f0f8ff</color>
 </resources>

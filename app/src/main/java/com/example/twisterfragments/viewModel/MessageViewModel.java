@@ -1,23 +1,16 @@
-package com.example.twisterfragments.ViewModel;
+package com.example.twisterfragments.viewModel;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
-import com.example.twisterfragments.Model.Comments;
-import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.model.Comments;
+import com.example.twisterfragments.model.Messages;
 
-import com.example.twisterfragments.UI.MessagesFragment;
-import com.example.twisterfragments.WebApiServices.ApiServices;
-import com.example.twisterfragments.WebApiServices.ApiUtils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.twisterfragments.webApiServices.ApiServices;
+import com.example.twisterfragments.webApiServices.ApiUtils;
 
 import java.util.List;
 
@@ -28,11 +21,10 @@ import retrofit2.Response;
 public class MessageViewModel extends ViewModel {
 
     final static String MESSAGE = "message";
-    RecyclerViewMessageAdapter madapter;
-
     private Messages selectedMessage;
 
     public void setMessages(Messages message) {
+
         selectedMessage = message;
     }
 
@@ -80,16 +72,6 @@ public class MessageViewModel extends ViewModel {
         });
     }
 
-    private MutableLiveData<Messages> messageLiveData;
-
-    public LiveData<Messages> uploadTheMessage() {
-        if (messageLiveData == null) {
-            messageLiveData = new MutableLiveData<>();
-            getAndShowAllMessages();
-            Log.d(MESSAGE, "in getMessages : " + messages.toString());
-        }
-        return messageLiveData;
-    }
     public void uploadMessage(Messages message) {
 
         ApiServices services = ApiUtils.getMessagesService();
@@ -98,11 +80,8 @@ public class MessageViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Messages> call, Response<Messages> response) {
                 if (response.isSuccessful()) {
-
                     Messages newMessage = response.body();
-                    messageLiveData.setValue(newMessage);
                     Log.d(MESSAGE, "the new message is: " + newMessage.toString());
-
                 } else {
                     String problem = "Problem is  " + response.code() + " " + response.message();
                     Log.e(MESSAGE, " the problem is: " + problem);
@@ -120,7 +99,6 @@ public class MessageViewModel extends ViewModel {
     private MutableLiveData<List<Comments>> comments;
 
     public LiveData<List<Comments>> getComments() {
-        //if (comments == null) {
             comments = new MutableLiveData<>();
             getAndShowAllComments();
             Log.d(MESSAGE, "in getMessages : " + comments.toString());

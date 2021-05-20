@@ -1,4 +1,4 @@
-package com.example.twisterfragments.Adapters;
+package com.example.twisterfragments.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,24 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.model.Messages;
 import com.example.twisterfragments.R;
-import com.example.twisterfragments.UI.MessagesFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerViewMessageAdapter.MyViewHolder> {
     private static final String LOG_TAG = "Messages";
     private List<Messages> data;
     private final LayoutInflater mInflater;
-    private  final ItemClickListener mClickListener;
+    private   ItemClickListener mClickListener;
 
 
-    public RecyclerViewMessageAdapter(Context context, ItemClickListener mClickListener) {
-        this.data = new ArrayList<>();
+    public RecyclerViewMessageAdapter(Context context, List<Messages> data) {
+        this.data = data;
         this.mInflater = LayoutInflater.from(context);
-        this.mClickListener = mClickListener;
         Log.d(LOG_TAG, data.toString());
     }
 
@@ -62,30 +58,21 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
         return count;
     }
 
-   /* public void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
-    }*/
+    }
 
     public void addMessage(Messages message) {
         data.add(0, message);
         notifyDataSetChanged();
     }
 
-    public void addMessages(List<Messages> allMessages) {
-
-        data.addAll(allMessages);
-        notifyDataSetChanged();
-
+    public interface ItemClickListener<T> {
+        void onItemClick(View view, int position, Messages message);
     }
 
-    //public interface ItemClickListener <T> {
-    //void onItemClick(View view, int position, Messages message);
-    public interface ItemClickListener {
-        void onItemClick(Messages message);
-    }
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    //public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public class MyViewHolder extends RecyclerView.ViewHolder {
         final TextView UsertextView, ContenttextView, TotalTextView;
 
         MyViewHolder(@NonNull View itemView) {
@@ -93,20 +80,19 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<RecyclerVie
             UsertextView = itemView.findViewById(R.id.recyclerUser);
             ContenttextView = itemView.findViewById(R.id.recyclerContent);
             TotalTextView = itemView.findViewById(R.id.recyclerTotalComments);
-            itemView.setOnClickListener(v -> mClickListener.onItemClick(data.get(getAdapterPosition())));
-
+            itemView.setOnClickListener(this);
         }
 
-   /* @Override
+    @Override
     public void onClick(View view) {
         if (mClickListener != null) {
             mClickListener.onItemClick(view, getAdapterPosition(), data.get(getAdapterPosition()));
 
         }
     }
-}*/
-    }
 }
+    }
+
 
 
 

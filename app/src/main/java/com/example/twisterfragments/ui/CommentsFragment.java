@@ -1,4 +1,4 @@
-package com.example.twisterfragments.UI;
+package com.example.twisterfragments.ui;
 
 import android.os.Bundle;
 
@@ -18,10 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.twisterfragments.ViewModel.MessageViewModel;
-import com.example.twisterfragments.Model.Comments;
+import com.example.twisterfragments.viewModel.MessageViewModel;
+import com.example.twisterfragments.model.Comments;
 import com.example.twisterfragments.R;
-import com.example.twisterfragments.Adapters.RecyclerViewCommentAdapter;
+import com.example.twisterfragments.adapters.RecyclerViewCommentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,16 +32,10 @@ public class CommentsFragment extends Fragment  {
 
     private TextView messageTextView;
     FirebaseAuth mAuth;
-    private TextView comment;
-
-    private Comments theComment;
-    //private ImageButton imageButton;
-    //public static final String Email = "user";
-    //FirebaseAuth fAuth;
     public static final String COMMENT = "comment";
     RecyclerViewCommentAdapter adapter;
     MessageViewModel mViewModel;
-   // private Layout layout;
+
 
     public CommentsFragment() {
         // Required empty public constructor

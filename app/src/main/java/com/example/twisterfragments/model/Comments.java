@@ -1,4 +1,4 @@
-package com.example.twisterfragments.Model;
+package com.example.twisterfragments.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -32,23 +32,12 @@ public class Comments implements Serializable {
      * @param user
      * @param content
      */
-    public Comments(Integer id, Integer messageId, String content, String user) {
-        super();
-        this.id = id;
-        this.messageId = messageId;
-        this.content = content;
-        this.user = user;
-    }
+
 
     public Comments(Integer messageId, String content, String user) {
         this.messageId = messageId;
         this.content = content;
         this.user = user;
-    }
-
-    public Comments(String content, String user) {
-        this.content = content;
-        this.user= user;
     }
 
     public Integer getId() {

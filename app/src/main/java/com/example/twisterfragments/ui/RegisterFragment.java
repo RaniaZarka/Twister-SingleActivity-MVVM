@@ -1,4 +1,4 @@
-package com.example.twisterfragments.UI;
+package com.example.twisterfragments.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.twisterfragments.R;
-import com.example.twisterfragments.ViewModel.AuthenticationViewModel;
+import com.example.twisterfragments.viewModel.AuthenticationViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -78,7 +77,6 @@ public class RegisterFragment extends Fragment {
             String password = paswordView.getText().toString().trim();
             Log.d("Register", "the email is " + email + " the password is " + password);
 
-            //if (mAuth.getCurrentUser() == null) {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
@@ -88,7 +86,7 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(getContext(), "Welcome to TWISTER-PM", Toast.LENGTH_LONG).show();
                 }
             }
-        
+
     };
     private View findViewById(int id) {
         return getView().findViewById(id);

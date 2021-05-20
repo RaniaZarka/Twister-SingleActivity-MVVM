@@ -1,20 +1,15 @@
-package com.example.twisterfragments.UI;
+package com.example.twisterfragments.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.twisterfragments.R;
 
@@ -36,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // this is for the back from comment to message fragment
+    // this is for the back from comment to message fragment, and from register to sign in fragment
+    // it shows when the navigation is not done by action bar
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -53,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     // override the onOptionsSelected method to call onNavDestinationSelected
    // Now when the user clicks the menu Item, the app automatically navigates
     // to the corresponding destination with the same id.
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

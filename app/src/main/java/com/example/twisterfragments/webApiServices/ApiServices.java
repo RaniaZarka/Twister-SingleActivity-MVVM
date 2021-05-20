@@ -1,7 +1,7 @@
-package com.example.twisterfragments.WebApiServices;
+package com.example.twisterfragments.webApiServices;
 
-import com.example.twisterfragments.Model.Comments;
-import com.example.twisterfragments.Model.Messages;
+import com.example.twisterfragments.model.Comments;
+import com.example.twisterfragments.model.Messages;
 
 import java.util.List;
 
@@ -29,10 +29,5 @@ public interface ApiServices {
     @POST("messages")
     Call<Messages>saveMessage(@Body Messages message);
 
-    @DELETE("messages/{id}")
-    Call<Messages> deleteMessage(@Path("id") int id);
-
-    @DELETE("messages/{messageId}/comments/{commentId}")
-    Call<Comments> deleteComment(@Path("messageId") int messageId, @Path("commentId") int commentId);
 
 }
