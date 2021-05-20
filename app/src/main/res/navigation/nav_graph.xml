@@ -19,11 +19,23 @@
             android:id="@+id/action_messagesFragment_to_commentsFragment"
             app:destination="@id/nav_comments" />
         <action
-            android:id="@+id/action_nav_mesages_to_authenticationFragment"
+            android:id="@+id/action_nav_mesages_to_nav_signin"
             app:destination="@id/nav_signin" />
     </fragment>
     <fragment
         android:id="@+id/nav_signin"
-        android:name="com.example.twisterfragments.UI.AuthenticationFragment"
-        android:label="AuthenticationFragment" />
+        android:name="com.example.twisterfragments.UI.SignInOutFragment"
+        android:label="AuthenticationFragment"
+        app:startDestination="@id/action_nav_signin_to_nav_mesages">
+        <action
+            android:id="@+id/action_nav_signin_to_registerFragment"
+            app:destination="@id/nav_register" />
+        <action
+            android:id="@+id/action_nav_signin_to_nav_mesages"
+            app:destination="@id/nav_mesages" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.example.twisterfragments.UI.RegisterFragment"
+        android:label="RegisterFragment" />
 </navigation>

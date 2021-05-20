@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:clickable="true"
-
     android:focusableInTouchMode="true"
     android:background="@drawable/blueshade">
 
@@ -16,12 +14,12 @@
         android:layout_marginTop="80dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="50dp"
-        android:paddingRight="20dp">
+        android:paddingStart="50dp"
+        android:paddingEnd="20dp">
 
 
         <EditText
-            android:id="@+id/mainEmail"
+            android:id="@+id/registerEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
@@ -40,7 +38,7 @@
             app:passwordToggleTint="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mainPasswordInput"
+                android:id="@+id/registerPasswordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rouded_button"
@@ -54,7 +52,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <Button
-            android:id="@+id/mainSignupBtn"
+            android:id="@+id/registerSignupBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
@@ -62,23 +60,7 @@
             android:onClick="register"
             android:text="Register" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:background="@drawable/rouded_button"
-            android:onClick="login"
-            android:id="@+id/mainSignInbtn"
-            android:text="Signin" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:background="@drawable/rouded_button"
-            android:onClick="logout"
-            android:id="@+id/mainSignoutBtn"
-            android:text="SignOut" />
 
         <TextView
             android:id="@+id/mainWelcome"

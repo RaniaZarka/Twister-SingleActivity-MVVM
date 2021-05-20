@@ -23,6 +23,7 @@ import com.example.twisterfragments.Model.Messages;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewMessageAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,22 +37,16 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
 
     FirebaseAuth mAuth;
 
-    RecyclerView recyclerView;
     MessageViewModel mViewModel;
     Button addButton;
 
     RecyclerViewMessageAdapter mAdapter;
-    ArrayList<Messages> messages= new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-    @Override
-    public void onStart() {
-
-        super.onStart();
     }
 
     @Override
@@ -73,7 +68,6 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
      mViewModel.uploadTheMessage().observe(getViewLifecycleOwner(), messages -> {
          if (messages != null) {
              mAdapter.addMessage(messages);
-             //populateRecycleView(messages);
          }
      });
  }
@@ -93,25 +87,27 @@ public class MessagesFragment extends Fragment implements View.OnTouchListener, 
         recyclerView.setAdapter(mAdapter);
 
         addButton = (Button) findViewById(R.id.AllMessagesAddBtn);
-        addButton.setOnClickListener(click);
+        addButton.setOnClickListener(addclick);
 
     }
-    View.OnClickListener click = new View.OnClickListener() {
+    View.OnClickListener addclick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             EditText input = (EditText) findViewById(R.id.messageInput);
             String content = input.getText().toString().trim();
             mAuth = FirebaseAuth.getInstance();
-            String email = mAuth.getCurrentUser().getEmail();
-            if (content.isEmpty()) {
-                Toast.makeText(getContext(),"You did not write a message" , Toast.LENGTH_SHORT).show();
-
+            FirebaseUser userfb = mAuth.getCurrentUser();
+            if (userfb == null) {
+                Toast.makeText(getContext(), "You did to sign in first", Toast.LENGTH_SHORT).show();
             } else {
-                Messages message = new Messages(content, email);
-                mViewModel.uploadMessage(message);
+                String email = mAuth.getCurrentUser().getEmail();
+                if (content.isEmpty()) {
+                    Toast.makeText(getContext(), "You did not write a message", Toast.LENGTH_SHORT).show();
 
-
-
+                } else {
+                    Messages message = new Messages(content, email);
+                    mViewModel.uploadMessage(message);
+                }
             }
         }
     };

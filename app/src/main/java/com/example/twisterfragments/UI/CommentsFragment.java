@@ -23,6 +23,7 @@ import com.example.twisterfragments.Model.Comments;
 import com.example.twisterfragments.R;
 import com.example.twisterfragments.Adapters.RecyclerViewCommentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -82,22 +83,11 @@ public class CommentsFragment extends Fragment  {
     }
 
     private void populateRecycleView(List<Comments> allComments) {
-        RecyclerView recyclerView =(RecyclerView) findViewById(R.id.commentRecyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.commentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new RecyclerViewCommentAdapter(requireContext(), allComments);
         recyclerView.setAdapter(adapter);
-        //private void populateRecycleView(List<Messages> allMessages) {
-            //adapter.addComments(allComments);
-        }
-
-      /*  adapter.setClickListener((view, position, item) -> {
-            theComment = item;
-           /* if (position >= 0) {
-                DeleteComment(position);*/
-    /* Log.d("delete", "position is: "+ position);
-            Log.d("delete", "the comment to delete is:  " + item.toString());}
-        );*/
-    //}
+    }
 
     View.OnClickListener click = new View.OnClickListener() {
         @Override
@@ -105,19 +95,23 @@ public class CommentsFragment extends Fragment  {
             EditText input = (EditText) findViewById(R.id.commentInput);
             String content = input.getText().toString().trim();
             Log.d(COMMENT, " the content is  " +content);
-            //String email  = input.getText().toString().trim();
             mAuth = FirebaseAuth.getInstance();
-            String email = mAuth.getCurrentUser().getEmail();
-            int messageId = mViewModel.getSelected().getId();
-            Log.d(COMMENT, " the id is   " + messageId);
-            if (content.isEmpty()) {
-                Toast.makeText(getContext(),"You did not write a comment" , Toast.LENGTH_SHORT).show();
-
+            FirebaseUser userfb = mAuth.getCurrentUser();
+            if (userfb == null) {
+                Toast.makeText(getContext(), "You did to sign in first", Toast.LENGTH_SHORT).show();
             } else {
-                Comments comment = new Comments(messageId, content, email );
-                Log.d(COMMENT, " the comment is  " + comment);
-                mViewModel.UploadComment( messageId, comment);
-                adapter.addComment(comment);
+                String email = mAuth.getCurrentUser().getEmail();
+                int messageId = mViewModel.getSelected().getId();
+                Log.d(COMMENT, " the id is   " + messageId);
+                if (content.isEmpty()) {
+                    Toast.makeText(getContext(), "You did not write a comment", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Comments comment = new Comments(messageId, content, email);
+                    Log.d(COMMENT, " the comment is  " + comment);
+                    mViewModel.UploadComment(messageId, comment);
+                    adapter.addComment(comment);
+                }
             }
         }
     };
