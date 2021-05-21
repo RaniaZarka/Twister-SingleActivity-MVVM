@@ -22,18 +22,14 @@ import java.util.Objects;
 public class AuthenticationViewModel extends AndroidViewModel {
     private final Application application;
     private final FirebaseAuth firebaseAuth;
-
     private final MutableLiveData<Boolean> loggedOutLiveData;
 
-
     public AuthenticationViewModel (Application application){
-        super(application);
-        this.application = application;
+        super(application);this.application = application;
      this.firebaseAuth = FirebaseAuth.getInstance();
      this.userLiveData = new MutableLiveData<>();
      this.loggedOutLiveData = new MutableLiveData<>();
 
-      // this will check if the user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
             userLiveData.postValue(firebaseAuth.getCurrentUser());
             loggedOutLiveData.postValue(false);
@@ -43,7 +39,6 @@ public class AuthenticationViewModel extends AndroidViewModel {
     private MutableLiveData<FirebaseUser> userLiveData;
 
     public LiveData<FirebaseUser> getUserLiveData() {
-
         if ( userLiveData== null) {
             userLiveData = new MutableLiveData<>();
         }
@@ -54,7 +49,6 @@ public class AuthenticationViewModel extends AndroidViewModel {
     public void register(String email, String password) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

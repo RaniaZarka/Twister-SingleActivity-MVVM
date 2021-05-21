@@ -100,7 +100,6 @@ public class MessagesFragment extends Fragment {
                     Messages message = new Messages(content, email);
                     Log.d("addMessage", " in else the message is  " + message);
                     mViewModel.uploadMessage(message);
-
                     mAdapter.addMessage(message);
                 }
             }

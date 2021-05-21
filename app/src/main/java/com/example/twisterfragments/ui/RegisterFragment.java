@@ -26,15 +26,17 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegisterFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+    private AuthenticationViewModel aViewModel;
+
+
     EditText emailView;
     EditText paswordView;
     Button registerButton;
-    private AuthenticationViewModel aViewModel;
+
 
     public RegisterFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,34 +62,29 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         emailView = (EditText)findViewById(R.id.registerEmail);
         paswordView = (EditText)findViewById(R.id.registerPasswordInput);
-
         registerButton =(Button) findViewById(R.id.registerSignupBtn);
         registerButton.setOnClickListener(clickRegister);
-
     }
+
     View.OnClickListener clickRegister = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
-
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Register", "the email is " + email + " the password is " + password);
-
-                if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Log.d("Register", "Current user is  " + user);
                     aViewModel.register(email, password);
                     Toast.makeText(getContext(), "Welcome to TWISTER-PM", Toast.LENGTH_LONG).show();
                 }
             }
-
     };
+
+
     private View findViewById(int id) {
         return getView().findViewById(id);
     }

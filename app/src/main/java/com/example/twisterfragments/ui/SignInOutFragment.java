@@ -22,6 +22,8 @@ import com.example.twisterfragments.R;
 import com.example.twisterfragments.viewModel.AuthenticationViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class SignInOutFragment extends Fragment {
     private FirebaseAuth mAuth;
     EditText emailView;
@@ -56,9 +58,7 @@ public class SignInOutFragment extends Fragment {
                 logoutButton.setEnabled(true);
             } else {
                 logoutButton.setEnabled(false);
-
             }
-
       });
     }
 
@@ -83,11 +83,10 @@ public class SignInOutFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
-            Navigation.findNavController(getView()).navigate(R.id.nav_register);
-
-
+            Navigation.findNavController(requireView()).navigate(R.id.nav_register);
         }
     };
+
     View.OnClickListener clickLogout = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
@@ -103,12 +102,10 @@ public class SignInOutFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
-
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Login", "the email is " + email + " the password is " + password);
-
-                if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
                     aViewModel.login(email, password);
