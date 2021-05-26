@@ -80,7 +80,6 @@ public class SignInOutFragment extends Fragment {
     }
 
     View.OnClickListener clickRegister = new View.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
             Navigation.findNavController(requireView()).navigate(R.id.nav_register);
@@ -88,18 +87,16 @@ public class SignInOutFragment extends Fragment {
     };
 
     View.OnClickListener clickLogout = new View.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
            if (mAuth.getCurrentUser() != null) {
                 aViewModel.logOut();
-                Toast.makeText(getContext(), "Your Are Signed Out", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Your Are Logged Out", Toast.LENGTH_LONG).show();
             }
         }
     };
 
     View.OnClickListener clickLogin = new View.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
             String email = emailView.getText().toString().trim();
@@ -109,6 +106,7 @@ public class SignInOutFragment extends Fragment {
                     Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
                 } else {
                     aViewModel.login(email, password);
+                Toast.makeText(getContext(), "You are logged in  " , Toast.LENGTH_SHORT).show();
                     Log.d("Login", " calling login from VM: " + " the email is " + email + "the password is " + password);
                 }
             }

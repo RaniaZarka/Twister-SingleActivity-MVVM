@@ -69,21 +69,19 @@ public class RegisterFragment extends Fragment {
     }
 
     View.OnClickListener clickRegister = new View.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         public void onClick(View view) {
             String email = emailView.getText().toString().trim();
             String password = paswordView.getText().toString().trim();
             Log.d("Register", "the email is " + email + " the password is " + password);
             if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
-                } else {
+                Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_LONG).show();
+            } else {
                     aViewModel.register(email, password);
                     Toast.makeText(getContext(), "Welcome to TWISTER-PM", Toast.LENGTH_LONG).show();
                 }
             }
     };
-
 
     private View findViewById(int id) {
         return getView().findViewById(id);

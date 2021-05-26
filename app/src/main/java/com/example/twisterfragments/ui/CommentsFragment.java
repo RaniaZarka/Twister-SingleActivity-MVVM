@@ -31,6 +31,7 @@ import java.util.List;
 public class CommentsFragment extends Fragment  {
 
     private TextView messageTextView;
+
     FirebaseAuth mAuth;
     public static final String COMMENT = "comment";
     RecyclerViewCommentAdapter adapter;
@@ -59,12 +60,19 @@ public class CommentsFragment extends Fragment  {
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
-        mViewModel.getComments().observe(getViewLifecycleOwner(), comments ->{
 
-                if (comments != null) {
-
-               populateRecycleView(comments);}
+        mViewModel.getComments().observe(getViewLifecycleOwner(), comments -> {
+            if (comments != null) {
+                populateRecycleView(comments);
+            }
         });
+      /*  mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            if (!errorMessage.isEmpty()) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+
         messageTextView.setText(mViewModel.getSelected().getContent());
     }
 

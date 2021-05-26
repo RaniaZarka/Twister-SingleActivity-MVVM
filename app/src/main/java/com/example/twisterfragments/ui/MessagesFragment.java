@@ -34,6 +34,7 @@ public class MessagesFragment extends Fragment {
     MessageViewModel mViewModel;
     RecyclerViewMessageAdapter mAdapter;
     Button addButton;
+    Boolean isValid= true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,18 +53,18 @@ public class MessagesFragment extends Fragment {
  public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
      super.onActivityCreated(savedInstanceState);
      mViewModel = new ViewModelProvider(requireActivity()).get(MessageViewModel.class);
+
      mViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
-             if (messages != null) {
-                 populateRecycleView(messages);
+         if (messages != null) {
+             populateRecycleView(messages);
+         }
+     });
+     mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+         if (!errorMessage.isEmpty()) {
+             Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
          }
      });
  }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mViewModel.getAndShowAllMessages();
-    }
 
     @Override
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
@@ -82,28 +83,29 @@ public class MessagesFragment extends Fragment {
         addButton.setOnClickListener(addclick);
 
     }
-    View.OnClickListener addclick = new View.OnClickListener() {
+
+    final View.OnClickListener addclick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
             EditText input = (EditText) findViewById(R.id.messageInput);
             String content = input.getText().toString().trim();
             mAuth = FirebaseAuth.getInstance();
             FirebaseUser userfb = mAuth.getCurrentUser();
             if (userfb == null) {
-                Toast.makeText(getContext(), "You did to sign in first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "You have to sign in first", Toast.LENGTH_SHORT).show();
             } else {
                 String email = mAuth.getCurrentUser().getEmail();
                 if (content.isEmpty()) {
                     Toast.makeText(getContext(), "You did not write a message", Toast.LENGTH_SHORT).show();
-
                 } else {
-                    Messages message = new Messages(content, email);
-                    Log.d("addMessage", " in else the message is  " + message);
-                    mViewModel.uploadMessage(message);
-                    mAdapter.addMessage(message);
+                        Messages message = new Messages(content, email);
+                        Log.d("addMessage", " in else the message is  " + message);
+                        mViewModel.uploadMessage(message);
+                        mAdapter.addMessage(message);
+                    }
                 }
             }
-        }
     };
 
     private void populateRecycleView(List<Messages> allMessages) {

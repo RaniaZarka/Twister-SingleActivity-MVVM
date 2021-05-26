@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class AuthenticationViewModel extends AndroidViewModel {
+    final static String AUTHVM = "authvm";
     private final Application application;
     private final FirebaseAuth firebaseAuth;
     private final MutableLiveData<Boolean> loggedOutLiveData;
@@ -45,7 +46,6 @@ public class AuthenticationViewModel extends AndroidViewModel {
         return userLiveData;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public void register(String email, String password) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -56,13 +56,13 @@ public class AuthenticationViewModel extends AndroidViewModel {
                             userLiveData.postValue(firebaseAuth.getCurrentUser());
                             Log.d("register", "Current user is  " + Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
                         } else {
-                            Toast.makeText(application.getApplicationContext(), "Registration Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            String problem = "Problem is  " + task.getException().getMessage();
+                            Log.e(AUTHVM, " the problem is: " + problem);
                         }
                     }
                 });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public void login(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
@@ -70,9 +70,10 @@ public class AuthenticationViewModel extends AndroidViewModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             userLiveData.postValue(firebaseAuth.getCurrentUser());
-                            Toast.makeText(application.getApplicationContext(), "You are logged in  " , Toast.LENGTH_SHORT).show();
+                            Log.e(AUTHVM, " User is logged in  " );
                         } else {
-                            Toast.makeText(application.getApplicationContext(), "Login Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            String problem = "Login problem is  " + task.getException().getMessage();
+                            Log.e(AUTHVM, " the problem is: " + problem);
                         }
                     }
                 });

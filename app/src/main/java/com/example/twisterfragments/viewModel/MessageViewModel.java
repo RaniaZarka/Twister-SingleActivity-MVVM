@@ -24,7 +24,6 @@ public class MessageViewModel extends ViewModel {
     private Messages selectedMessage;
 
     public void setMessages(Messages message) {
-
         selectedMessage = message;
     }
 
@@ -37,18 +36,30 @@ public class MessageViewModel extends ViewModel {
 
     }
 
-    private MutableLiveData<List<Messages>> messages;
+    private MutableLiveData<String> errorMessage;
+    public LiveData<String> getErrorMessage(){
+        if (errorMessage == null) {
+            errorMessage = new MutableLiveData<>();
+            getAndShowAllMessages();
+            Log.d(MESSAGE, "in getErrorMessages : " + errorMessage.toString());
+        }
+        return errorMessage;
+    }
 
-    public LiveData<List<Messages>> getMessages() {
-        if (messages == null) {
+
+    public MutableLiveData<List<Messages>> messages;
+
+    public MutableLiveData<List<Messages>> getMessages() {
             messages = new MutableLiveData<>();
             getAndShowAllMessages();
             Log.d(MESSAGE, "in getMessages : " + messages.toString());
-        }
         return messages;
     }
 
     public void getAndShowAllMessages() {
+        if(errorMessage != null){
+            errorMessage.setValue("");
+        }
         ApiServices services = ApiUtils.getMessagesService();
         Call<List<Messages>> getAllMessagesCall = services.getAllMessages();
         getAllMessagesCall.enqueue(new Callback<List<Messages>>() {
@@ -59,21 +70,24 @@ public class MessageViewModel extends ViewModel {
                     messages.setValue(response.body());
                     Log.d(MESSAGE, " the messages are " + messages.getValue());
                 } else {
-                    messages.setValue(null);
-                    String message = response.code() + " " + response.message();
-                    Log.d(MESSAGE, "the problem is: " + message);
+                    String errorMessageString = response.code() + " " + response.message();
+                    errorMessage.setValue(errorMessageString);
+                    Log.d(MESSAGE, "the problem is: " + errorMessageString);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Messages>> call, Throwable t) {
                 Log.e(MESSAGE, t.getMessage());
+                errorMessage.setValue(t.getMessage());
             }
         });
     }
 
     public void uploadMessage(Messages message) {
-
+        if(errorMessage != null){
+            errorMessage.setValue("");
+        }
         ApiServices services = ApiUtils.getMessagesService();
         Call<Messages> saveNewMessageCall = services.saveMessage(message);
         saveNewMessageCall.enqueue(new Callback<Messages>() {
@@ -83,13 +97,16 @@ public class MessageViewModel extends ViewModel {
                     Messages newMessage = response.body();
                     Log.d(MESSAGE, "the new message is: " + newMessage.toString());
                 } else {
-                    String problem = "Problem is  " + response.code() + " " + response.message();
+                    String problem =  response.code() + " " + response.message();
                     Log.e(MESSAGE, " the problem is: " + problem);
+                    errorMessage.setValue(problem);
+                    Log.d(MESSAGE, "the problem is: " + problem);
                 }
             }
             @Override
             public void onFailure(Call<Messages> call, Throwable t) {
                 Log.e(MESSAGE, t.getMessage());
+                errorMessage.setValue(t.getMessage());
             }
         });
     }
